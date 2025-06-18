@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulasi Fokus Lensa</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(to top, #90caf9, #e3f2fd);
+      color: #333;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Awan animasi */
+    .cloud {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: moveClouds 60s linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .cloud1 {
+      top: 50px;
+      left: -200px;
+      width: 150px;
+      height: 60px;
+      animation-duration: 60s;
+    }
+
+    .cloud1::before {
+      width: 80px;
+      height: 80px;
+      left: 40px;
+      top: -20px;
+    }
+
+    .cloud1::after {
+      width: 60px;
+      height: 60px;
+      left: 90px;
+      top: 0;
+    }
+
+    .cloud2 {
+      top: 150px;
+      left: -300px;
+      width: 200px;
+      height: 70px;
+      animation-duration: 90s;
+    }
+
+    .cloud2::before {
+      width: 100px;
+      height: 100px;
+      left: 50px;
+      top: -25px;
+    }
+
+    .cloud2::after {
+      width: 70px;
+      height: 70px;
+      left: 110px;
+      top: 0;
+    }
+
+    @keyframes moveClouds {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(200vw);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 40px;
+      color: #0d47a1;
+      margin-bottom: 80px;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #444;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 440px;
+    }
+
+    canvas {
+      background: #fefefe;
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .result {
+      margin-top: 18px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1976d2;
+    }
+
+    .footer {
+      margin-top: 80px;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .footer .right {
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        width: 90%;
+        padding: 16px;
+      }
+
+      canvas {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      .footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Awan animasi -->
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+
+  <h1>SIMULASI MENGUKUR FOKUS LENSA</h1>
+
+  <h2>Lensa Cembung</h2>
+  <div class="container">
+    <div class="card">
+      <label>
+        Jarak Benda (do): <span id="doVal">30</span> cm
+        <input type="range" id="do" min="5" max="200" value="30">
+      </label>
+      <label>
+        Jarak Bayangan (di): <span id="diVal">30</span> cm
+        <input type="range" id="di" min="5" max="200" value="30">
+      </label>
+      <div class="result">Fokus: <span id="fokus"></span> cm</div>
+      <canvas id="canvasCembung" width="400" height="200"></canvas>
+    </div>
+  </div>
+
+  <h2>Lensa Cekung</h2>
+  <div class="container">
+    <div class="card">
+      <label>
+        Jarak Benda (do): <span id="doCekungVal">30</span> cm
+        <input type="range" id="doCekung" min="5" max="200" value="30">
+      </label>
+      <label>
+        Jarak Bayangan (di): <span id="diCekungVal">-20</span> cm
+        <input type="range" id="diCekung" min="-200" max="-5" value="-20">
+      </label>
+      <div class="result">Fokus: <span id="fokusCekung"></span> cm</div>
+      <canvas id="canvasCekung" width="400" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <strong>Pembuat:</strong><br>
+      Abimanyu Akmal Prasetiya (24051030026)<br>
+      M Mustofa Fairuzy M (24051030028)
+    </div>
+    <div class="right">
+      Teknik Elektro<br>
+      Fakultas Teknik<br>
+      Universitas Negeri Yogyakarta
+    </div>
+  </div>
+
+  <script>
+    function hitungFokus(do_, di_) {
+      return Math.round((1 / ((1 / do_) + (1 / di_))) * 100) / 100;
+    }
+
+    // Lensa Cembung
+    const doSlider = document.getElementById("do");
+    const diSlider = document.getElementById("di");
+    const doVal = document.getElementById("doVal");
+    const diVal = document.getElementById("diVal");
+    const fokus = document.getElementById("fokus");
+    const canvasCembung = document.getElementById("canvasCembung");
+    const ctx = canvasCembung.getContext("2d");
+
+    function gambarCembung(do_, di_) {
+      ctx.clearRect(0, 0, 400, 200);
+      const cx = 200, cy = 100;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, 20);
+      ctx.quadraticCurveTo(cx + 30, cy, cx, 180);
+      ctx.moveTo(cx, 20);
+      ctx.quadraticCurveTo(cx - 30, cy, cx, 180);
+      ctx.strokeStyle = "#2196f3";
+      ctx.stroke();
+
+      const xDo = cx - do_;
+      ctx.beginPath();
+      ctx.moveTo(xDo, cy);
+      ctx.lineTo(xDo, cy - 40);
+      ctx.strokeStyle = "green";
+      ctx.stroke();
+      ctx.fillText("Benda", xDo - 10, cy - 45);
+
+      const xDi = cx + di_;
+      ctx.beginPath();
+      ctx.moveTo(xDi, cy);
+      ctx.lineTo(xDi, cy - 40);
+      ctx.strokeStyle = "red";
+      ctx.stroke();
+      ctx.fillText("Bayangan", xDi - 15, cy - 45);
+
+      ctx.beginPath();
+      ctx.moveTo(0, cy);
+      ctx.lineTo(400, cy);
+      ctx.strokeStyle = "#555";
+      ctx.stroke();
+    }
+
+    function updateCembung() {
+      const do_ = parseFloat(doSlider.value);
+      const di_ = parseFloat(diSlider.value);
+      doVal.textContent = do_;
+      diVal.textContent = di_;
+      fokus.textContent = hitungFokus(do_, di_);
+      gambarCembung(do_, di_);
+    }
+
+    doSlider.addEventListener("input", updateCembung);
+    diSlider.addEventListener("input", updateCembung);
+    updateCembung();
+
+    // Lensa Cekung
+    const doCekung = document.getElementById("doCekung");
+    const diCekung = document.getElementById("diCekung");
+    const doCekungVal = document.getElementById("doCekungVal");
+    const diCekungVal = document.getElementById("diCekungVal");
+    const fokusCekung = document.getElementById("fokusCekung");
+    const canvasCekung = document.getElementById("canvasCekung");
+    const ctxCekung = canvasCekung.getContext("2d");
+
+    function gambarCekung(do_, di_) {
+      ctxCekung.clearRect(0, 0, 400, 200);
+      const cx = 200, cy = 100;
+
+      ctxCekung.beginPath();
+      ctxCekung.moveTo(cx - 30, 20);
+      ctxCekung.quadraticCurveTo(cx - 10, cy, cx - 30, 180);
+      ctxCekung.moveTo(cx + 30, 20);
+      ctxCekung.quadraticCurveTo(cx + 10, cy, cx + 30, 180);
+      ctxCekung.strokeStyle = "#ab47bc";
+      ctxCekung.stroke();
+
+      const xDo = cx - do_;
+      ctxCekung.beginPath();
+      ctxCekung.moveTo(xDo, cy);
+      ctxCekung.lineTo(xDo, cy - 40);
+      ctxCekung.strokeStyle = "green";
+      ctxCekung.stroke();
+      ctxCekung.fillText("Benda", xDo - 10, cy - 45);
+
+      const xDi = cx + di_;
+      ctxCekung.setLineDash([5, 3]);
+      ctxCekung.beginPath();
+      ctxCekung.moveTo(xDi, cy);
+      ctxCekung.lineTo(xDi, cy - 40);
+      ctxCekung.strokeStyle = "red";
+      ctxCekung.stroke();
+      ctxCekung.setLineDash([]);
+      ctxCekung.fillText("Bayangan", xDi - 15, cy - 45);
+
+      ctxCekung.beginPath();
+      ctxCekung.moveTo(0, cy);
+      ctxCekung.lineTo(400, cy);
+      ctxCekung.strokeStyle = "#555";
+      ctxCekung.stroke();
+    }
+
+    function updateCekung() {
+      const do_ = parseFloat(doCekung.value);
+      const di_ = parseFloat(diCekung.value);
+      doCekungVal.textContent = do_;
+      diCekungVal.textContent = di_;
+      fokusCekung.textContent = hitungFokus(do_, di_);
+      gambarCekung(do_, di_);
+    }
+
+    doCekung.addEventListener("input", updateCekung);
+    diCekung.addEventListener("input", updateCekung);
+    updateCekung();
+  </script>
+</body>
+</html>
